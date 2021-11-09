@@ -43,6 +43,45 @@ use RefreshDatabase;
             'body' => 'My first status'
             
         ]);
+
      
     }
+    public function test_a_status_requires_a_body()
+    
+    {
+
+         $user = factory(User::class)->create();
+         $this->actingAs($user);
+ 
+        
+         $response = $this->postJson(route('statuses.store'), ['body' => '']);
+       
+     
+        $response->assertJsonStructure([
+            'message', 'errors' => ['body']
+            ]);
+       
+        
+
+         }
+    public function test_a_status_body_requires_a_minimum_length()
+    
+    {  $user = factory(User::class)->create();
+       $this->actingAs($user);
+
+       
+       $response = $this->postJson(route('statuses.store'), ['body' => 'abcd']);
+
+       $response->assertStatus(422);
+      
+    
+    
+         
+      
+        
+
+        
+     }
+
+    
 }
